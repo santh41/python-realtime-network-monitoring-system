@@ -1,5 +1,3 @@
-# 🚀 Network Anomaly Detection System - Startup Guide
-
 ## 📋 Quick Start Steps
 
 ### **Method 1: Automatic Startup (Recommended)**
@@ -33,7 +31,7 @@ start.bat
 
 ### **Step 2: Navigate to Project Directory**
 ```bash
-cd network_anomaly_detection
+cd python-realtime-network-monitoring-system
 ```
 
 ### **Step 3: Choose Your Startup Method**
@@ -152,7 +150,7 @@ start.bat
 ## 📁 Project Structure After Startup
 
 ```
-network_anomaly_detection/
+python-realtime-network-monitoring-system/
 ├── 📁 models/              # ML models (auto-created)
 ├── 📁 templates/           # Web interface templates
 ├── 📁 venv/               # Virtual environment (auto-created)
@@ -199,3 +197,4 @@ When everything is working correctly, you should see:
 ```
 
 **🎉 Your Network Anomaly Detection System is now running!**
+
