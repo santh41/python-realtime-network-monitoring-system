@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Connection Test</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        .info { color: blue; }
+    </style>
+</head>
+<body>
+    <h1>🔌 WebSocket Connection Test</h1>
+    <div id="status">Testing connection...</div>
+    <div id="logs"></div>
+    
+    <script>
+        function log(message, type = 'info') {
+            const logsDiv = document.getElementById('logs');
+            const logDiv = document.createElement('div');
+            logDiv.className = `log ${type}`;
+            logDiv.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logsDiv.appendChild(logDiv);
+            console.log(message);
+        }
+        
+        log('🔌 Starting WebSocket connection test...', 'info');
+        
+        // Test Socket.IO connection
+        const socket = io({
+            transports: ['websocket', 'polling'],
+            timeout: 10000,
+            reconnection: true,
+            reconnectionAttempts: 5,
+            reconnectionDelay: 1000
+        });
+        
+        socket.on('connect', function() {
+            log('✅ Connected to server!', 'success');
+            document.getElementById('status').innerHTML = '<span style="color: green;">✅ Connected</span>';
+            
+            // Test emit
+            socket.emit('request_stats');
+            log('📤 Sent request_stats event', 'info');
+        });
+        
+        socket.on('disconnect', function() {
+            log('❌ Disconnected from server', 'error');
+            document.getElementById('status').innerHTML = '<span style="color: red;">❌ Disconnected</span>';
+        });
+        
+        socket.on('connect_error', function(error) {
+            log(`❌ Connection error: ${error}`, 'error');
+            document.getElementById('status').innerHTML = '<span style="color: red;">❌ Connection Error</span>';
+        });
+        
+        socket.on('stats_update', function(data) {
+            log(`📊 Received stats: ${JSON.stringify(data)}`, 'success');
+        });
+        
+        socket.on('anomaly_alert', function(data) {
+            log(`🚨 Received anomaly: ${JSON.stringify(data)}`, 'success');
+        });
+        
+        socket.on('status', function(data) {
+            log(`📋 Received status: ${JSON.stringify(data)}`, 'info');
+        });
+        
+        // Test after 5 seconds
+        setTimeout(() => {
+            if (socket.connected) {
+                log('✅ Connection test successful!', 'success');
+            } else {
+                log('❌ Connection test failed!', 'error');
+            }
+        }, 5000);
+    </script>
+</body>
+</html> 
